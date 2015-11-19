@@ -1,0 +1,24 @@
+&PARAM
+  ncoutput = .false.,    
+  time_max =  0.15,       
+  dim_x    =  256,
+  dim_y    =  256,
+  dim_z    =  50,
+  halo_x   =  1,
+  halo_y   =  1,
+  halo_z   =  1,
+/
+
+&NML_MPI
+  nb_proc_x = 2,
+  nb_proc_y = 2,
+  nb_proc_z = 1,
+/
+
+&NC_OUTPUT
+  ncFileName = '3diffusion_output.nc', 
+  frequency  =                   100 , 
+  largeFile  =                .TRUE.,
+/
+
+! don't remove this line !

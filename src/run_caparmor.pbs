@@ -1,0 +1,39 @@
+#!/bin/csh
+#PBS -N 3DdiffMPI
+#PBS -q parallel8
+#PBS -l select=1:ncpus=4:mpiprocs=4
+
+set echo
+
+########################################################
+##        3Ddiffusion  in MPI mode on CapArmor       ##
+########################################################
+## Nicolas.Grima@univ-brest.fr ##
+pwd
+uname -n
+
+############################
+# get the path for mpirun ##
+############################
+source /usr/share/modules/init/csh
+module load intel-comp/11.1.073
+module load intel-mpi/4.0.0.028
+module load netcdf-intel/3.6.3-11.1.073
+
+#################################
+# get the path for library MKL ##
+#################################
+setenv MKL_SERIAL YES
+
+#####################################################
+###########            ON CAPARMOR        ###########
+#####################################################
+    cd /home2/caparmor/grima/3Ddiffusion/bin
+    ls -rtl
+    date
+    time mpirun -np 4 3Ddiffusion
+    date
+    ls -rtl
+#####################################################
+#####################################################
+#####################################################

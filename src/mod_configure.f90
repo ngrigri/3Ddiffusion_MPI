@@ -1,0 +1,9 @@
+  !!--- WARNING ---
+  !! Please don't edit or change this file
+  !! It was automatically generated during ./configure
+  MODULE mod_configure
+    IMPLICIT NONE
+    CHARACTER(len =  32), PARAMETER :: VERSION = '0.0.4_MPI'
+    CHARACTER(len =  64), PARAMETER :: APPNAME = '3Ddiffusion'
+    CHARACTER(len = 256), PARAMETER :: PREFIX  = '/home2/caparmor/grima/3Ddiffusion/MPInside'
+  END MODULE mod_configure

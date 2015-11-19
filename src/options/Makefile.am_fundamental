@@ -1,0 +1,42 @@
+########################################################################
+##- Author@mail: Nicolas.Grima@univ-brest.fr
+##- Date       : January 2013
+########################################################################
+FORTRAN_TOOLS=.
+
+SUFFIXES = .F90 .f90 .o .mod
+
+.f90.mod:
+	$(FC) $(FCFLAGS) -c $<
+
+.f90.o:
+	$(FC) $(FCFLAGS) -c -o $@ $<
+
+.c.o:
+	$(CC) $(CFLAGS) -c  $@ $<
+
+clean-local:
+	-rm -f *.mod *.o *.log
+
+##
+SUBDIRS	     = . model_fortran options
+bin_PROGRAMS = 3Ddiffusion
+bin_SCRIPTS  = namelist
+EXTRA_DIST   = mod_netcdf_write_fast.f90 namelist
+##
+##
+3Ddiffusion_SOURCES =         \
+	mod_precision.f90         \
+	mod_configure.f90         \
+	mod_cst.f90               \
+	mod_lun.f90               \
+	mod_memory.f90            \
+	mod_inout.f90             \
+	mod_namelist.f90          \
+	mod_mpi.f90               \
+	mod_which_type            \
+	mod_netcdf_output         \
+	mod_3Ddiffusion.f90       \
+	prg_3Ddiffusion.f90
+##
+

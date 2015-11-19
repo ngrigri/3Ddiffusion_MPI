@@ -1,0 +1,39 @@
+########################################################################
+##- Author: Nicolas.Grima@univ-brest.fr
+##- Date       : January 2013
+########################################################################
+FORTRAN_TOOLS=.
+
+SUFFIXES = .F90 .f90 .o .mod
+
+.f90.mod:
+	$(FC) $(FCFLAGS) -c $<
+
+.f90.o:
+	$(FC) $(FCFLAGS) -c -o $@ $<
+
+.c.o:
+	$(CC) $(CFLAGS) -c  $@ $<
+
+clean-local:
+	-rm -f *.mod *.o
+
+##
+SUBDIRS	     = . model_fortran options
+bin_PROGRAMS = fsp
+bin_SCRIPTS  = namelist
+EXTRA_DIST   = mod_netcdf_write_fast.f90 namelist
+##
+##
+fsp_SOURCES =                                      \
+	$(FORTRAN_TOOLS)/mod_precision.f90         \
+	$(FORTRAN_TOOLS)/mod_configure.f90         \
+	$(FORTRAN_TOOLS)/mod_cst.f90               \
+	$(FORTRAN_TOOLS)/mod_lun.f90               \
+	$(FORTRAN_TOOLS)/mod_memory.f90            \
+	$(FORTRAN_TOOLS)/mod_netcdf_write_fast.f90 \
+        $(FORTRAN_TOOLS)/mod_inout.f90             \
+        $(FORTRAN_TOOLS)/mod_namelist.f90          \
+	prg_fsp.f90
+##
+
