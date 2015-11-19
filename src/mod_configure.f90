@@ -5,5 +5,5 @@
     IMPLICIT NONE
     CHARACTER(len =  32), PARAMETER :: VERSION = '0.0.4_MPI'
     CHARACTER(len =  64), PARAMETER :: APPNAME = '3Ddiffusion'
-    CHARACTER(len = 256), PARAMETER :: PREFIX  = '/home2/caparmor/grima/3Ddiffusion/MPInside'
+    CHARACTER(len = 256), PARAMETER :: PREFIX  = '/home/grima/FORTRAN/3Ddiffusion'
   END MODULE mod_configure

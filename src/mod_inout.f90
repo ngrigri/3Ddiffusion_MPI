@@ -1,0 +1,1 @@
+options/mod_inout.f90_fundamental

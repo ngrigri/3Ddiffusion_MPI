@@ -76,7 +76,7 @@ CONTAINS
        WRITE(lun_standard,*)''
        WRITE(lun_standard,*) "3D Diffusion (fortran)"
        WRITE(lun_standard,*)''
-       WRITE(lun_standard,"(A, I3, A, I3, A, I3, A,E13.5,A,E13.5,A,E13.5)") &
+       WRITE(lun_standard,"(A, I4, A, I4, A, I4, A,E13.5,A,E13.5,A,E13.5)") &
             "X:", dim_x, ", Y:", dim_y, ", Z:", dim_z, ", &
             kappa:", kappa, ", dt:", dt, ", dx:", dx
        WRITE(*,*)" coeffs:", coeff_east_west, coeff_north_south, coeff_top_bottom, coeff_center
@@ -130,7 +130,7 @@ CONTAINS
 
        IF (rank == iZero) THEN
           IF((ncoutput).AND.(MODULO(icnt,frequency) .EQ. 0)) THEN
-             WRITE(lun_standard,"(A,I5,A,F7.4,A,F7.4,A,F7.4,A)") &
+             WRITE(lun_standard,"(A,I5,A,F7.4,A,F16.12,A,F7.4,A)") &
                   "time after iteration ", icnt, ": ", time, &
                   "sec (maxval f_p= ",maxval_fp ,', maxval fn_p',maxval_fnp,')'
           END IF
@@ -140,13 +140,14 @@ CONTAINS
           CALL mod_output_write(f_p(sx:ex,sy:ey,sz:ez))
        ENDIF
 
-       IF ((time + rHalf*dt >= time_max) .OR. (icnt >= 100)) EXIT
+       IF ((time + rHalf*dt >= time_max) .OR. (icnt >= 1000)) EXIT
 
     END DO
 
     IF (rank == iZero) THEN
-       WRITE(lun_standard,"(A,I5,A,F7.4)") &
-                  "time after iteration ", icnt, ": ", time
+       WRITE(lun_standard,"(A,I5,A,F16.12,A,F7.4,A)") &
+                  "time after iteration ", icnt, ": ", time, &
+                  " sec (maxval= ", maxval_fp,')'
     ENDIF
 
   END SUBROUTINE sub_3Ddiff_mainloop

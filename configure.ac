@@ -106,6 +106,17 @@ AC_ARG_ENABLE(
     enable_prof=yes,
     enable_prof=no
              )
+
+#
+## Inetel trace analyser (if it is available)
+##
+AC_ARG_ENABLE(
+    traceanalyser,
+    [  --enable-traceanalyser - Intel traceanalyser (in mpi mode only !).],
+    enable_traceanalyser=yes,
+    enable_traceanalyser=no
+             )
+
 #
 ## Quad precision (if it is available)
 ##
@@ -129,10 +140,10 @@ AC_ARG_ENABLE(
              )
 
 AC_ARG_ENABLE(
-    mpi,
-    [  --enable-mpi - MPI library and includes.],
-    enable_mpi=yes,
-    enable_mpi=no
+    intel_mpi,
+    [  --enable-intel_mpi - Intel MPI library and includes.],
+    enable_intel_mpi=yes,
+    enable_intel_mpi=no
              )
 
 AC_ARG_ENABLE(
@@ -320,14 +331,14 @@ if test -n "$FC" ; then
 	      debug)
             AC_MSG_NOTICE([ifort -> DEBUGGING OPTIONS are SELECTED])
 	        CFLAGS="-g -O0"
-            FCFLAGS="-g -O0 -check all -traceback -auto -warn all -warn unused -debug variable_locations"
+            	FCFLAGS="-g -O0 -check all -traceback -auto -warn all -warn unused -debug variable_locations"
 	        LDFLAGS="-g -O0 -check all -traceback -auto"
           ;;
           aggressive)
             AC_MSG_NOTICE([ifort -> AGGRESSIVE COMPILER OPTIONS are SELECTED])
-	        CFLAGS=" -g -O3 -no-prec-div -xHost -fp-model fast=2 -static"
-    	    FCFLAGS="-g -O3 -no-prec-div -xHost -fp-model fast=2 -static"
-            LDFLAGS="-g -O3 -no-prec-div -xHost -fp-model fast=2 -static"
+	        CFLAGS=" -g -O3 -xHost -ipo"
+    	   	FCFLAGS="-g -O3 -xHost -ipo"
+            	LDFLAGS="-g -O3 -xHost -ipo"
           ;;
           normal|*)
             AC_MSG_NOTICE([ifort -> NORMAL MODE])
@@ -338,8 +349,8 @@ if test -n "$FC" ; then
 	    if test "$enable_prof" = "yes" ; then
           AC_MSG_NOTICE([      -> PROFILING is SELECTED (gprof and intel report)])
 	      CFLAGS="-pg $CFLAGS"
-          FCFLAGS="-pg -opt-report 3 -opt-report-file=$<.log -opt-report-phase=all $FCFLAGS"
-          LDFLAGS="-pg $LDFLAGS"
+              FCFLAGS="-pg -opt-report 3 -opt-report-file=$<.log -opt-report-phase=all $FCFLAGS"
+              LDFLAGS="-pg $LDFLAGS"
         fi
      	if test "$enable_openmp" = "yes" ; then
           AC_MSG_NOTICE([      -> OpenMP PARALLELISATION IS SELECTED])
@@ -477,10 +488,14 @@ if test "$enable_mpi_mpt" = "yes" ; then
   LDFLAGS="$LDFLAGS -I${MPI_INC} -L${MPI_LIB} -lmpi"
 fi
 
-if test "$enable_mpi" = "yes" ; then
-  AC_MSG_NOTICE([       -> MPI PARALLELISATION IS SELECTED])
-  AC_MSG_NOTICE([ ifort -> mpiifort]) 
+if test "$enable_intel_mpi" = "yes" ; then
+  AC_MSG_NOTICE([       -> Intel MPI PARALLELISATION IS SELECTED])
+  AC_MSG_NOTICE([       -> mpiifort]) 
   FC=mpiifort
+  if test "$enable_traceanalyser" = "yes" ; then
+     FC="$FC -trace"
+     AC_MSG_NOTICE([       -> mpiifort -trace (traceanalyser)])
+  fi
   CFLAGS="$CFLAGS"
   FCFLAGS="$FCFLAGS -I${MPI_INC}"
   LDFLAGS="$LDFLAGS -I${MPI_INC} -L${MPI_LIB} -lmpi"
